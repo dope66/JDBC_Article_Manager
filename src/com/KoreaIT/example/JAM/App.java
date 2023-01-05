@@ -19,6 +19,8 @@ public class App {
 
 			Connection conn = null;
 
+			
+			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
