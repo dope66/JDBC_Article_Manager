@@ -18,9 +18,6 @@ public class App {
 			String cmd = sc.nextLine().trim();
 
 			Connection conn = null;
-
-			
-			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
