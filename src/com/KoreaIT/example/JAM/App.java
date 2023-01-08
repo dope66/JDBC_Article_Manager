@@ -77,31 +77,98 @@ public class App {
 
 			System.out.printf("%d번 글이 생성 되었습니다\n", id);
 
-		}else if (cmd.startsWith("article detail ")) {
+		} else if (cmd.equals("member join")) {
+			System.out.println("== 회원 가입 ==");
+			String loginId = null;
+			String loginPw = null;
+			String loginPwChk = null;
+			String name = null;
+			while (true) {
+				System.out.printf("ID : ");
+				loginId = sc.nextLine().trim();
+				if (loginId.length() == 0) {
+					System.out.println("아이디를 입력해주세요.");
+					continue;
+				}
+
+				break;
+			}
+			while (true) {
+				System.out.printf("PW : ");
+				loginPw = sc.nextLine().trim();
+				if (loginPw.length() == 0) {
+					System.out.println("비밀 번호를 확인해 주세요");
+					continue;
+				}
+				boolean loginPwCheck = true;
+
+				while (true) {
+					System.out.printf("PWChk : ");
+					loginPwChk = sc.nextLine().trim();
+					if (loginPwChk.length() == 0) {
+						System.out.println("비밀 번호확인을 확인해 주세요");
+						continue;
+					}
+					if (loginPw.equals(loginPwChk) == false) {
+						System.out.println("비밀번호가 일치하지않습니다. 다시 입력해주세요");
+						loginPwCheck = false;
+						break;
+					}
+				}
+				if (loginPwCheck) {
+					break;
+				}
+			}
+			while (true) {
+				System.out.println("name : ");
+				name = sc.nextLine();
+
+				if (name.length() == 0) {
+					System.out.println("이름을 입력해주세요");
+					continue;
+				}
+				break;
+
+			}
+
+			SecSql sql = new SecSql();
+
+			sql.append("INSERT INTO `member`");
+			sql.append("SET regDate = NOW()");
+			sql.append(", updateDate = NOW()");
+			sql.append(", loginId = ?", loginId);
+			sql.append(", loginPw = ?", loginPw);
+			sql.append(", `name` = ?", name);
+
+			int id = DBUtil.insert(conn, sql);
+
+//			System.out.printf("%d번 글이 생성 되었습니다\n", id);
+			System.out.printf("%s회원님 가입 되었씁니다.\n", name);
+
+		} else if (cmd.startsWith("article detail ")) {
 			int id = Integer.parseInt(cmd.split(" ")[2]);
 
 			SecSql sql = new SecSql();
 			sql.append("SELECT *");
 			sql.append("FROM article");
 			sql.append("WHERE id = ?", id);
-			
-			Map<String,Object> articleMap = DBUtil.selectRow(conn, sql);
-			
-			if(articleMap.isEmpty()) {
-				System.out.printf("%d번 게시글은 존재하지 않습니다.\n",id);
+
+			Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+			if (articleMap.isEmpty()) {
+				System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 				return;
 			}
 			System.out.printf("== %d번 게시물 상세보기 ==\n", id);
-			Article article =new Article(articleMap);
-			System.out.printf("번호 : %d\n",article.id);
-			System.out.printf("날짜 : %s\n",article.regDate);
-			System.out.printf("수정 날짜 : %s\n",article.updateDate);
-			System.out.printf("제목 : %s\n",article.title);
-			System.out.printf("내용 : %s\n",article.body);
+			Article article = new Article(articleMap);
+			System.out.printf("번호 : %d\n", article.id);
+			System.out.printf("날짜 : %s\n", article.regDate);
+			System.out.printf("수정 날짜 : %s\n", article.updateDate);
+			System.out.printf("제목 : %s\n", article.title);
+			System.out.printf("내용 : %s\n", article.body);
 
+		}
 
-		} 
-		
 		else if (cmd.startsWith("article modify ")) {
 			int id = Integer.parseInt(cmd.split(" ")[2]);
 			System.out.printf("== %d번 게시물 수정 ==\n", id);
@@ -122,23 +189,22 @@ public class App {
 
 			System.out.printf("%d번 글이 수정 되었습니다\n", id);
 
-		}else if (cmd.startsWith("article delete ")) {
+		} else if (cmd.startsWith("article delete ")) {
 			int id = Integer.parseInt(cmd.split(" ")[2]);
 			SecSql sql = new SecSql();
 			sql.append("SELECT COUNT(*)");
 			sql.append("FROM article");
 			sql.append(" WHERE id = ?", id);
-			
+
 			int articleCount = DBUtil.selectRowIntValue(conn, sql);
-			 
-			if(articleCount ==0) {
-				System.out.printf("%d번 게시글은 존재하지 않습니다.\n",id);
+
+			if (articleCount == 0) {
+				System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 				return;
 			}
 			System.out.printf("== %d번 게시물 삭제 ==\n", id);
-			sql =new SecSql();
-			
-			
+			sql = new SecSql();
+
 			sql.append("DELETE FROM article");
 			sql.append(" WHERE id = ?", id);
 
@@ -147,8 +213,7 @@ public class App {
 			System.out.printf("%d번 글이 삭제 되었습니다\n", id);
 
 		}
-		
-		
+
 		else if (cmd.equals("article list")) {
 			System.out.println("== 게시물 리스트 ==");
 
