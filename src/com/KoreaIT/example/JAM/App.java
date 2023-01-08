@@ -112,8 +112,8 @@ public class App {
 					if (loginPw.equals(loginPwChk) == false) {
 						System.out.println("비밀번호가 일치하지않습니다. 다시 입력해주세요");
 						loginPwCheck = false;
-						break;
 					}
+					break;
 				}
 				if (loginPwCheck) {
 					break;
