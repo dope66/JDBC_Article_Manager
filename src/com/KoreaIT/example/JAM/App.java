@@ -2,26 +2,20 @@ package com.KoreaIT.example.JAM;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.controller.ArticleController;
 import com.KoreaIT.example.JAM.controller.MemberController;
-import com.KoreaIT.example.JAM.util.DBUtil;
-import com.KoreaIT.example.JAM.util.SecSql;
 
 public class App {
 	public void run() {
-		Scanner sc = new Scanner(System.in);
-
+		Container.sc = new Scanner(System.in);
+		Container.init();
 		while (true) {
 			System.out.printf("명령어) ");
-			String cmd = sc.nextLine().trim();
+			String cmd = Container.sc.nextLine().trim();
 
 			Connection conn = null;
 			try {
@@ -35,7 +29,10 @@ public class App {
 
 			try {
 				conn = DriverManager.getConnection(url, "root", "");
-				doAction(conn, sc, cmd);
+				
+				Container.conn=conn;
+				
+				doAction(cmd);
 
 				if (cmd.equals("exit")) {
 					System.out.println("프로그램을 종료합니다");
@@ -54,18 +51,17 @@ public class App {
 				}
 			}
 		}
-		sc.close();
+		Container.sc.close();
 	}
 
-	private void doAction(Connection conn, Scanner sc, String cmd) {
-		MemberController memberController = new MemberController(conn, sc);
-		ArticleController articleController = new ArticleController(conn, sc);
+	private void doAction(String cmd) {
+		MemberController memberController = Container.memberController;
+		ArticleController articleController = Container.articleController;
 		if (cmd.equals("member join")) {
 			memberController.doJoin(cmd);
 		}else if(cmd.equals("member login")) {
 			memberController.doLogin(cmd);
 		}
-		
 		else if (cmd.equals("article write")) {
 			articleController.doWrite(cmd);
 		} else if (cmd.equals("article list")) {

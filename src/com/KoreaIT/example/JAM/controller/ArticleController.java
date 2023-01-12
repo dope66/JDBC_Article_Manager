@@ -1,26 +1,16 @@
 package com.KoreaIT.example.JAM.controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 import com.KoreaIT.example.JAM.Article;
+import com.KoreaIT.example.JAM.container.Container;
 import com.KoreaIT.example.JAM.service.ArticleService;
-import com.KoreaIT.example.JAM.util.DBUtil;
-import com.KoreaIT.example.JAM.util.SecSql;
 
 public class ArticleController extends Controller {
 	private ArticleService articleService;
-	private Connection conn;
 
-	public ArticleController(Connection conn, Scanner sc) {
-		super(sc);
-		this.conn = conn;
-		articleService = new ArticleService(conn);
+	public ArticleController() {
+		articleService = Container.articleService;
 	}
 
 	public void doWrite(String cmd) {
