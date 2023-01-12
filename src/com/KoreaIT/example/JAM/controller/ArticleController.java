@@ -14,14 +14,22 @@ public class ArticleController extends Controller {
 	}
 
 	public void doWrite(String cmd) {
-		System.out.println("== 게시물 작성 ==");
-		System.out.printf("제목 : ");
-		String title = sc.nextLine();
-		System.out.printf("내용 : ");
-		String body = sc.nextLine();
-		int id = articleService.doWrite(title, body);
-
-		System.out.printf("%d번 글이 생성 되었습니다\n", id);
+		if(Container.session.isLogined()==false) {
+			System.out.println("로그인 후 이용해 주세요");
+			return;
+		}
+			System.out.println("== 게시물 작성 ==");
+			System.out.printf("제목 : ");
+			String title = sc.nextLine();
+			System.out.printf("내용 : ");
+			String body = sc.nextLine();
+			int id = articleService.doWrite(title, body);
+			
+			System.out.printf("%d번 글이 생성 되었습니다\n", id);
+			
+		
+		
+		
 
 	}
 
@@ -44,6 +52,10 @@ public class ArticleController extends Controller {
 	}
 
 	public void showDetail(String cmd) {
+		if(Container.session.isLogined()==false) {
+			System.out.println("로그인 후 이용해 주세요");
+			return;
+		}
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 
 		Article article = articleService.getArticle(id);
@@ -62,9 +74,12 @@ public class ArticleController extends Controller {
 	}
 
 	public void doModify(String cmd) {
+		if(Container.session.isLogined()==false) {
+			System.out.println("로그인 후 이용해 주세요");
+			return;
+		}
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 		boolean isArticleExists = articleService.isArticleExists(id);
-
 		if (isArticleExists == false) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
@@ -83,9 +98,12 @@ public class ArticleController extends Controller {
 	}
 
 	public void doDelete(String cmd) {
+		if(Container.session.isLogined()==false) {
+			System.out.println("로그인 후 이용해 주세요");
+			return;
+		}
 		int id = Integer.parseInt(cmd.split(" ")[2]);
 		boolean isArticleExists = articleService.isArticleExists(id);
-
 		if (isArticleExists == false) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 			return;
