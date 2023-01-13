@@ -15,9 +15,9 @@ public class ArticleService {
 
 	}
 
-	public int doWrite(String title, String body) {
+	public int doWrite(int memberId, String title, String body) {
 		// TODO Auto-generated method stub
-		return articleDao.doWrite(title, body);
+		return articleDao.doWrite(memberId,title, body);
 	}
 
 	public boolean isArticleExists(int id) {
@@ -40,6 +40,10 @@ public class ArticleService {
 
 	public List<Article> getArticles() {
 		return articleDao.getArticles();
+	}
+
+	public void increaseHit(int id) {
+		 articleDao.increaseHit(id);
 	}
 
 }
